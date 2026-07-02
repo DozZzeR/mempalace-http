@@ -1,0 +1,22 @@
+# Example Caddy reverse proxy for secret-protected MemPalace MCP access.
+#
+# Required environment:
+#   MEMPALACE_PUBLIC_HOST=mempalace.example.com
+#   MEMPALACE_COMMON_TOKEN=<secret>
+#
+# Local upstreams:
+#   common -> 127.0.0.1:4118
+#
+# Do not expose 4118 directly to the internet.
+
+{$MEMPALACE_PUBLIC_HOST} {
+	@common header Authorization "Bearer {$MEMPALACE_COMMON_TOKEN}"
+
+	handle @common {
+		reverse_proxy 127.0.0.1:4118
+	}
+
+	handle {
+		respond "Unauthorized" 401
+	}
+}

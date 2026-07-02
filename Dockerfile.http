@@ -1,0 +1,8 @@
+FROM mempalace:local
+
+ENV MEMPALACE_TRANSPORT=http \
+    MEMPALACE_HTTP_HOST=0.0.0.0 \
+    MEMPALACE_HTTP_PORT=8000 \
+    MEMPALACE_HTTP_PATH=/mcp
+
+CMD ["http"]

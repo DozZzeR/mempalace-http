@@ -1,0 +1,18 @@
+services:
+  mempalace-http:
+    image: mempalace-http:local
+    build:
+      context: .
+      dockerfile: Dockerfile.http
+    container_name: mem-palace-common-http
+    restart: unless-stopped
+    env_file:
+      - ./mempalace-common-http.env
+    ports:
+      - "127.0.0.1:4118:8000"
+    volumes:
+      - mempalace-common-data:/data
+
+volumes:
+  mempalace-common-data:
+

@@ -1,0 +1,10 @@
+# Real local secrets and host-specific overrides.
+*.env
+!.env.example
+mempalace-common-http.env
+Caddyfile.sslip
+
+# Runtime scratch.
+*.log
+tmp/
+
