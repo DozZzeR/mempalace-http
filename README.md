@@ -44,6 +44,7 @@ the MemPalace source repository first, then build this HTTP image on top.
 - `Dockerfile.http` - thin image layer over `mempalace:local` that enables HTTP transport.
 - `docker-compose.yml` - local service definition for the HTTP MCP server.
 - `mempalace-common-http.env.example` - safe example env file.
+- `AGENTS.md.example` - reusable MemPalace-only agent instruction section.
 - `Caddyfile.mempalace.example` - reverse proxy example with bearer-token gate.
 - `scripts/rebuild.sh` - build the HTTP wrapper image.
 - `scripts/restart.sh` - recreate the service container.
@@ -82,6 +83,20 @@ Verify it:
 
 ```bash
 ./scripts/smoke-test.sh
+```
+
+## Agent Instructions Template
+
+Use `AGENTS.md.example` as the MemPalace-only section for project agent
+instructions. It extracts the durable memory rules from a larger project
+instruction file and leaves out unrelated stack, delivery, and Claude-specific
+notes.
+
+Copy it into a project `AGENTS.md` or `CLAUDE.md`, then replace:
+
+```text
+<project-name>
+<project_wing>
 ```
 
 ## Endpoint
@@ -150,4 +165,3 @@ Statuses are `queued`, `running`, `succeeded`, or `failed`.
 Job status is currently in-memory for the running MemPalace HTTP process. If the
 container restarts, job history is lost, but already-filed palace data remains
 in the persistent volume.
-

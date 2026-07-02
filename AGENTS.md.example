@@ -1,0 +1,115 @@
+# Project Agent Instructions — MemPalace Section
+
+Copy this section into a project `AGENTS.md`, `CLAUDE.md`, or equivalent agent
+instruction file. Replace the placeholders before use.
+
+## MemPalace — Shared Memory Across Models And Sessions
+
+MemPalace is distributed shared memory used by models and developers on this
+project. Treat it as the durable source for architecture decisions, domain
+specs, and project state that should survive across sessions.
+
+Load relevant MemPalace context before making assumptions. Write durable
+facts, decisions, blockers, and checkpoints back so other models can continue
+the work later.
+
+- **Project name:** `<project-name>`
+- **Wing:** `<project_wing>` (always scope reads and writes to this wing)
+
+Examples:
+
+```text
+Project name: fotodetstvo-voice-bot
+Wing: fotodetstvo_voice_bot
+```
+
+## Load The Project Guide
+
+Load the project guide through whichever MCP surface your client supports.
+Any one is enough; they return the same instructions.
+
+```text
+prompts/get name="mempalace-project-guide"
+```
+
+```text
+resources/read server="mempalace" uri="mempalace://guides/project/<project-name>"
+```
+
+```text
+tools/call name="mempalace_get_project_guide" project_name="<project-name>"
+```
+
+## Read Rules
+
+Use `mempalace_search` first for task context.
+
+Use `mempalace_get_drawer` only when exact full content is needed.
+
+Always scope reads to:
+
+```text
+wing="<project_wing>"
+```
+
+`hall="code"` is the read-only mined codebase structure. Never write to it
+manually.
+
+## Write Rules
+
+Write only durable information to MemPalace:
+
+- architecture and design decisions;
+- ADRs;
+- domain requirements that are expected to remain true;
+- non-code constraints or blockers;
+- meaningful project checkpoints worth resuming from.
+
+Use:
+
+```text
+wing="<project_wing>"
+hall="decision"
+room="<concise_lowercase_underscore_room>"
+```
+
+Write content in English unless the project explicitly requires otherwise.
+
+Before writing, search/check for duplicates.
+
+## Do Not Store
+
+Do not store:
+
+- transient debugging logs;
+- secrets, tokens, API keys, or `.env` values;
+- guesses or unsupported assumptions;
+- routine code edits that are obvious from git;
+- volatile task statuses.
+
+If a stored fact changes, invalidate or replace the old drawer instead of
+adding a contradictory one.
+
+## Task Tracker Separation
+
+Keep volatile task tracking separate from MemPalace.
+
+Use your task tracker for live work:
+
+- tasks;
+- statuses;
+- priorities;
+- acceptance criteria;
+- comments about what is being done now.
+
+Use MemPalace for durable why:
+
+- project north star;
+- domain-model backbone;
+- durable workflow decisions;
+- provider boundaries;
+- non-code constraints.
+
+Never mirror task statuses into MemPalace. They go stale and mislead later
+sessions.
+
